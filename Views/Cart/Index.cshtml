@@ -1,0 +1,39 @@
+@model List<bellamart_ecommerce_app.Models.CartItem>
+@{
+    ViewData["Title"] = "Your Cart";
+    decimal total = ViewBag.Total;
+}
+
+<section class="storefront">
+    <div class="storefront__announcement">Free delivery on orders over ₹999 <span>•</span> Easy 7-day returns</div>
+    <div class="storefront__nav">
+        <a class="brand" asp-controller="Product" asp-action="Index"><span class="brand__mark">b</span><span>bella<span class="brand__accent">mart</span></span></a>
+        <nav class="storefront__links" aria-label="Main navigation"><a asp-controller="Product" asp-action="Index">Shop</a><a asp-controller="Product" asp-action="Index" asp-fragment="new-arrivals">New arrivals</a><a asp-controller="Product" asp-action="Index" asp-fragment="categories">Categories</a></nav>
+        <div class="storefront__actions"><a class="back-link" asp-controller="Product" asp-action="Index">← Continue shopping</a></div>
+    </div>
+
+    <main class="cart-page">
+        <div class="section-heading cart-heading"><div><p class="eyebrow">Your selection</p><h1>Your Cart</h1></div><span class="product-count">@Model.Sum(item => item.Quantity) items</span></div>
+        @if (TempData["CartMessage"] is string message) { <p class="cart-message">@message</p> }
+        @if (Model.Count == 0)
+        {
+            <div class="cart-empty"><h2>Your cart is waiting.</h2><p>Browse the collection and add something beautiful.</p><a class="button button--dark" asp-controller="Product" asp-action="Index">Start shopping <span>→</span></a></div>
+        }
+        else
+        {
+            <div class="cart-layout">
+                <div class="cart-items">
+                    @foreach (var item in Model)
+                    {
+                        <article class="cart-item">
+                            <img src="@item.Product.ImageUrl" alt="@item.Product.Name" />
+                            <div class="cart-item__info"><p class="product-card__category">@item.Product.Category</p><h2>@item.Product.Name</h2><p class="cart-item__price">₹@item.Product.Price.ToString("N0")</p><div class="cart-item__controls"><div class="quantity-control"><form asp-action="Decrease" method="post"><input type="hidden" name="productId" value="@item.Product.Id" /><button type="submit" aria-label="Decrease quantity">−</button></form><span>@item.Quantity</span><form asp-action="Increase" method="post"><input type="hidden" name="productId" value="@item.Product.Id" /><button type="submit" aria-label="Increase quantity">+</button></form></div><form asp-action="Remove" method="post"><input type="hidden" name="productId" value="@item.Product.Id" /><button class="remove-link" type="submit">Remove</button></form></div></div>
+                            <strong class="cart-item__total">₹@item.LineTotal.ToString("N0")</strong>
+                        </article>
+                    }
+                </div>
+                <aside class="cart-summary"><p class="eyebrow">Order summary</p><div class="summary-row"><span>Subtotal</span><strong>₹@total.ToString("N0")</strong></div><div class="summary-row"><span>Delivery</span><strong>Free</strong></div><div class="summary-total"><span>Total</span><strong>₹@total.ToString("N0")</strong></div><a class="button button--dark checkout-button" asp-action="Checkout">Checkout <span>→</span></a></aside>
+            </div>
+        }
+    </main>
+</section>

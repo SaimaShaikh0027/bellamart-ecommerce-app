@@ -1,0 +1,13 @@
+@model List<bellamart_ecommerce_app.Models.Product>
+@{
+    ViewData["Title"] = "Wishlist";
+}
+
+<section class="storefront">
+    <div class="storefront__announcement">Your saved edit <span>•</span> Keep the things you love close</div>
+    <div class="storefront__nav"><a class="brand" asp-controller="Product" asp-action="Index"><span class="brand__mark">b</span><span>bella<span class="brand__accent">mart</span></span></a><nav class="storefront__links" aria-label="Main navigation"><a asp-controller="Product" asp-action="Index">Shop</a><a class="active" asp-action="Index">♡ Wishlist</a><a asp-controller="Cart" asp-action="Index">Cart</a></nav><div class="storefront__actions"><a class="back-link" asp-controller="Product" asp-action="Index">← Continue shopping</a></div></div>
+    <main class="wishlist-page"><div class="section-heading"><div><p class="eyebrow">Saved for later</p><h1>Wishlist</h1></div><span class="product-count">@Model.Count items</span></div>
+    @if (Model.Count == 0) { <div class="cart-empty"><h2>Your wishlist is empty.</h2><p>Tap the heart on anything you want to remember.</p><a class="button button--dark" asp-controller="Product" asp-action="Index">Explore products <span>→</span></a></div> }
+    else { <div class="product-grid">@foreach (var product in Model) { <article class="product-card"><a class="product-card__image" asp-controller="Product" asp-action="Details" asp-route-id="@product.Id"><img src="@product.ImageUrl" alt="@product.Name" /></a><div class="product-card__details"><div><p class="product-card__category">@product.Category</p><h3>@product.Name</h3></div></div><p class="product-card__price">₹@product.Price.ToString("N0")</p><div class="product-card__actions"><form asp-controller="Cart" asp-action="Add" method="post"><input type="hidden" name="productId" value="@product.Id" /><button class="add-button" type="submit">Add To Cart</button></form><form asp-action="Remove" method="post"><input type="hidden" name="productId" value="@product.Id" /><button class="buy-button wishlist-remove" type="submit">Remove</button></form></div></article> } </div> }
+    </main>
+</section>

@@ -1,0 +1,18 @@
+@model bellamart_ecommerce_app.Models.CheckoutViewModel
+@{
+    ViewData["Title"] = "Checkout";
+    decimal total = ViewBag.Total ?? 0m;
+}
+
+<section class="storefront">
+    <div class="storefront__announcement">Secure mock checkout <span>•</span> No payment will be charged</div>
+    <div class="storefront__nav"><a class="brand" asp-controller="Product" asp-action="Index"><span class="brand__mark">b</span><span>bella<span class="brand__accent">mart</span></span></a><div class="storefront__actions"><a class="back-link" asp-controller="Cart" asp-action="Index">← Back to cart</a></div></div>
+    <main class="checkout-page">
+        <div class="section-heading checkout-heading"><div><p class="eyebrow">Almost yours</p><h1>Checkout</h1></div></div>
+        <form asp-action="Checkout" method="post" class="checkout-layout">
+            <div class="checkout-form"><div class="checkout-section"><h2>1. Address</h2><label asp-for="Address"></label><textarea asp-for="Address" placeholder="House number, street, city, state and PIN code"></textarea><span asp-validation-for="Address" class="validation-message"></span></div><div class="checkout-section"><h2>2. Payment Method</h2><div class="payment-options"><label><input asp-for="PaymentMethod" type="radio" value="Cash On Delivery" checked /> <span>Cash On Delivery</span></label><label><input asp-for="PaymentMethod" type="radio" value="UPI" /> <span>UPI</span></label><label><input asp-for="PaymentMethod" type="radio" value="Credit Card" /> <span>Credit Card</span></label></div></div></div>
+            <aside class="cart-summary checkout-summary"><p class="eyebrow">3. Order Summary</p><p class="checkout-summary__copy">Your selected items will be confirmed after you place this mock order.</p><div class="summary-row"><span>Delivery</span><strong>Free</strong></div><div class="summary-total"><span>Total</span><strong>₹@total.ToString("N0")</strong></div><button class="button button--dark checkout-button" type="submit">Place Order <span>→</span></button></aside>
+        </form>
+    </main>
+</section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

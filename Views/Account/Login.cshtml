@@ -1,0 +1,22 @@
+@model bellamart_ecommerce_app.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<section class="account-page">
+    <a class="brand account-brand" asp-controller="Product" asp-action="Index"><span class="brand__mark">b</span><span>bella<span class="brand__accent">mart</span></span></a>
+    <div class="account-card">
+        <p class="eyebrow">Welcome back</p>
+        <h1>Login to bellamart</h1>
+        <p class="account-intro">Pick up where you left off.</p>
+        <form asp-action="Login" method="post" class="account-form">
+            <div asp-validation-summary="ModelOnly" class="validation-message"></div>
+            <label asp-for="Email"></label><input asp-for="Email" autocomplete="email" placeholder="you@example.com" /><span asp-validation-for="Email" class="validation-message"></span>
+            <label asp-for="Password"></label><input asp-for="Password" autocomplete="current-password" placeholder="Your password" /><span asp-validation-for="Password" class="validation-message"></span>
+            <label class="remember-row"><input asp-for="RememberMe" /> <span>Remember me</span></label>
+            <button class="button button--dark account-submit" type="submit">Login <span>→</span></button>
+        </form>
+        <p class="account-switch">New to bellamart? <a asp-action="Register">Create an account</a></p>
+    </div>
+</section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

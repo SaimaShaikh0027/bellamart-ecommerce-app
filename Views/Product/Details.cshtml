@@ -1,0 +1,28 @@
+@model bellamart_ecommerce_app.Models.Product
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<section class="storefront">
+    <div class="storefront__announcement">Free delivery on orders over ₹999 <span>•</span> Easy 7-day returns</div>
+    <div class="storefront__nav">
+        <a class="brand" asp-controller="Product" asp-action="Index"><span class="brand__mark">b</span><span>bella<span class="brand__accent">mart</span></span></a>
+        <nav class="storefront__links" aria-label="Main navigation"><a class="active" asp-controller="Product" asp-action="Index">Shop</a><a href="/Product/Index#new-arrivals">New arrivals</a><a href="/Product/Index#categories">Categories</a></nav>
+        <div class="storefront__actions"><a class="account-link" asp-controller="Account" asp-action="Login">Login</a><a class="account-link" asp-controller="Wishlist" asp-action="Index">Wishlist</a><a class="back-link" asp-controller="Product" asp-action="Index">← Back to shop</a><a class="icon-button" asp-controller="Cart" asp-action="Index" aria-label="Shopping bag"><span aria-hidden="true">♧</span><b id="cart-count">0</b></a></div>
+    </div>
+
+    <main class="product-detail">
+        <div class="product-detail__image"><img src="@Model.ImageUrl" alt="@Model.Name" /></div>
+        <div class="product-detail__info">
+            <p class="eyebrow">@Model.Category</p>
+            <h1>@Model.Name</h1>
+            <p class="product-detail__price">₹@Model.Price.ToString("N0")</p>
+            <div class="product-detail__rule"></div>
+            <p class="product-detail__description">@Model.Description</p>
+            <p class="product-detail__label">Category: <strong>@Model.Category</strong></p>
+            <div class="quantity-row"><label for="quantity">Quantity</label><div class="quantity-control"><button type="button" data-quantity-action="decrease" aria-label="Decrease quantity">−</button><input id="quantity" type="number" value="1" min="1" max="99" aria-label="Quantity" /><button type="button" data-quantity-action="increase" aria-label="Increase quantity">+</button></div></div>
+            <div class="detail-actions"><form asp-controller="Cart" asp-action="Add" method="post"><input type="hidden" name="productId" value="@Model.Id" /><input type="hidden" name="quantity" value="1" id="detail-quantity" /><button class="button button--dark detail-cart" type="submit">Add To Cart</button></form><form asp-controller="Wishlist" asp-action="Add" method="post"><input type="hidden" name="productId" value="@Model.Id" /><button class="button button--coral" type="submit">Add To Wishlist</button></form><form asp-controller="Cart" asp-action="Add" method="post"><input type="hidden" name="productId" value="@Model.Id" /><input type="hidden" name="quantity" value="1" id="buy-now-quantity" /><button class="button button--coral" type="submit">Buy Now</button></form></div>
+            <p class="detail-note">Complimentary delivery over ₹999. Secure checkout.</p>
+        </div>
+    </main>
+</section>

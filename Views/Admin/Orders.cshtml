@@ -1,0 +1,6 @@
+@model List<bellamart_ecommerce_app.Models.Order>
+@{
+    ViewData["Title"] = "Admin Orders";
+}
+
+<section class="admin-page"><header class="admin-header"><a class="brand" asp-controller="Product" asp-action="Index"><span class="brand__mark">b</span><span>bella<span class="brand__accent">mart</span></span></a><div><a class="admin-link" asp-action="Index">Products</a><a class="admin-link" asp-controller="Order" asp-action="Index">My Orders</a></div></header><div class="admin-title"><div><p class="eyebrow">Customer purchases</p><h1>View Orders</h1></div><span class="product-count">@Model.Count orders</span></div><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Order</th><th>Items</th><th>Payment</th><th>Date</th><th>Total</th></tr></thead><tbody>@if (Model.Count == 0) { <tr><td colspan="5">No orders have been placed yet.</td></tr> } else { @foreach (var order in Model.OrderByDescending(item => item.PlacedAt)) { <tr><td><strong>#@order.OrderNumber</strong></td><td>@string.Join(", ", order.Items.Select(item => $"{item.Product.Name} × {item.Quantity}"))</td><td>@order.PaymentMethod</td><td>@order.PlacedAt.ToString("dd MMM yyyy")</td><td><strong>₹@order.Total.ToString("N0")</strong></td></tr> } }</tbody></table></div></section>

@@ -1,0 +1,11 @@
+@model List<bellamart_ecommerce_app.Models.Product>
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<section class="admin-page">
+    <header class="admin-header"><a class="brand" asp-controller="Product" asp-action="Index"><span class="brand__mark">b</span><span>bella<span class="brand__accent">mart</span></span></a><div><a class="admin-link" asp-action="Orders">View Orders</a><a class="button button--dark admin-add" asp-action="Create">+ Add Product</a></div></header>
+    <div class="admin-title"><div><p class="eyebrow">Store control center</p><h1>Admin Panel</h1></div><span class="product-count">@Model.Count products</span></div>
+    <div class="admin-stats"><div><span>Products</span><strong>@Model.Count</strong></div><div><span>Inventory units</span><strong>@Model.Sum(product => product.Stock)</strong></div><div><span>Low stock</span><strong>@Model.Count(product => product.Stock < 10)</strong></div></div>
+    <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Inventory</th><th>Actions</th></tr></thead><tbody>@foreach (var product in Model) { <tr><td><div class="admin-product"><img src="@product.ImageUrl" alt="@product.Name" /><strong>@product.Name</strong></div></td><td>@product.Category</td><td>₹@product.Price.ToString("N0")</td><td><span class="stock @(product.Stock < 10 ? "stock--low" : "")">@product.Stock in stock</span></td><td><a class="table-action" asp-action="Edit" asp-route-id="@product.Id">Edit</a><form asp-action="Delete" asp-route-id="@product.Id" method="post" class="inline-form"><button class="table-action table-action--delete" type="submit">Delete</button></form></td></tr> } </tbody></table></div>
+</section>

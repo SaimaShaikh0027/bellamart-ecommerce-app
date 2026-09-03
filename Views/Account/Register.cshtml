@@ -1,0 +1,23 @@
+@model bellamart_ecommerce_app.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<section class="account-page">
+    <a class="brand account-brand" asp-controller="Product" asp-action="Index"><span class="brand__mark">b</span><span>bella<span class="brand__accent">mart</span></span></a>
+    <div class="account-card">
+        <p class="eyebrow">Welcome to bellamart</p>
+        <h1>Create your account</h1>
+        <p class="account-intro">Save your favorites and enjoy a faster checkout.</p>
+        <form asp-action="Register" method="post" class="account-form">
+            <div asp-validation-summary="ModelOnly" class="validation-message"></div>
+            <label asp-for="FullName"></label><input asp-for="FullName" autocomplete="name" placeholder="Your full name" /><span asp-validation-for="FullName" class="validation-message"></span>
+            <label asp-for="Email"></label><input asp-for="Email" autocomplete="email" placeholder="you@example.com" /><span asp-validation-for="Email" class="validation-message"></span>
+            <label asp-for="Password"></label><input asp-for="Password" autocomplete="new-password" placeholder="At least 6 characters" /><span asp-validation-for="Password" class="validation-message"></span>
+            <label asp-for="ConfirmPassword"></label><input asp-for="ConfirmPassword" autocomplete="new-password" placeholder="Repeat your password" /><span asp-validation-for="ConfirmPassword" class="validation-message"></span>
+            <button class="button button--dark account-submit" type="submit">Register <span>→</span></button>
+        </form>
+        <p class="account-switch">Already have an account? <a asp-action="Login">Login</a></p>
+    </div>
+</section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

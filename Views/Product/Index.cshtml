@@ -1,0 +1,44 @@
+@model List<bellamart_ecommerce_app.Models.Product>
+@{
+    ViewData["Title"] = "Shop";
+    var categories = Model.Select(product => product.Category).Distinct().OrderBy(category => category);
+    var currentUser = Context.Session.GetString("BellamartUser");
+}
+
+<section class="storefront">
+    <div class="storefront__announcement">Free delivery on orders over ₹999 <span>•</span> Easy 7-day returns</div>
+    <div class="storefront__nav">
+        <a class="brand" asp-controller="Product" asp-action="Index"><span class="brand__mark">b</span><span>bella<span class="brand__accent">mart</span></span></a>
+        <nav class="storefront__links" aria-label="Main navigation">
+            <a class="active" href="#shop">Shop</a>
+            <a href="#new-arrivals">New arrivals</a>
+            <a href="#categories">Categories</a>
+        </nav>
+        <div class="storefront__actions">
+            <label class="search-box" for="product-search"><span aria-hidden="true">⌕</span><input id="product-search" type="search" placeholder="Search products" aria-label="Search products" /></label>
+            @if (currentUser is null) { <a class="account-link" asp-controller="Account" asp-action="Login">Login</a><a class="account-link account-link--register" asp-controller="Account" asp-action="Register">Register</a> } else { <span class="account-welcome">Hi, @currentUser</span><form asp-controller="Account" asp-action="Logout" method="post"><button class="logout-button" type="submit">Logout</button></form> }<a class="account-link" asp-controller="Wishlist" asp-action="Index">♡ Wishlist</a><a class="account-link" asp-controller="Order" asp-action="Index">My Orders</a><a class="icon-button" asp-controller="Cart" asp-action="Index" aria-label="Shopping bag"><span aria-hidden="true">♧</span><b id="cart-count">0</b></a>
+        </div>
+    </div>
+
+    <div class="hero" id="new-arrivals">
+        <div class="hero__copy"><p class="eyebrow">The everyday edit</p><h1>Good things,<br /><em>beautifully found.</em></h1><p class="hero__intro">A considered collection for your wardrobe, your home, and all the little rituals in between.</p><a class="button button--dark" href="#shop">Explore the collection <span>→</span></a></div>
+        <div class="hero__image"><img src="/img/products/LinenBlendOvershirt.jpg" alt="Linen Blend Overshirt" /><div class="hero__tag">Curated<br />for living</div></div>
+    </div>
+
+    <div class="section-heading" id="categories"><div><p class="eyebrow">Browse the edit</p><h2>Find your next favorite</h2></div><span class="product-count">@Model.Count items</span></div>
+    <div class="category-tabs" role="tablist" aria-label="Product categories"><button class="category-tab active" type="button" data-category="All">All products</button>@foreach (var category in categories) {<button class="category-tab" type="button" data-category="@category">@category</button>}</div>
+
+    <div class="product-grid" id="shop">
+        @foreach (var product in Model)
+        {
+            <article class="product-card" data-category="@product.Category" data-name="@product.Name.ToLowerInvariant()">
+                <div class="product-card__image"><a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id"><img src="@product.ImageUrl" alt="@product.Name" loading="lazy" /></a><form asp-controller="Wishlist" asp-action="Add" method="post"><input type="hidden" name="productId" value="@product.Id" /><button class="heart-button" type="submit" aria-label="Add @product.Name to wishlist">♡</button></form></div>
+                <div class="product-card__details"><div><p class="product-card__category">@product.Category</p><h3><a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">@product.Name</a></h3></div></div>
+                <p class="product-card__price">₹@product.Price.ToString("N0")</p>
+                <div class="product-card__actions"><form asp-controller="Cart" asp-action="Add" method="post"><input type="hidden" name="productId" value="@product.Id" /><button class="add-button" type="submit">Add To Cart</button></form><a class="buy-button" asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">Buy Now</a></div>
+            </article>
+        }
+    </div>
+    <p class="empty-state" id="empty-state" hidden>No products match your search.</p>
+</section>
+
